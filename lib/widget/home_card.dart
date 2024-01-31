@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quizz/question/question.dart';
+import 'package:quizz/page/quizz.dart';
 import 'package:quizz/data/questionData.dart';
+import 'package:quizz/helper/navigator_helper.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({super.key});
@@ -26,9 +27,10 @@ class HomeCard extends StatelessWidget {
                       borderRadius: BorderRadius.zero),
                 ),
                 onPressed: () {
-                  // TODO à remplacer par le helper
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Question(questions: QuestionData().questionList)));
+                  NavigatorHelper().toSpecificPage(
+                      context: context,
+                      page: Question(questions: QuestionData().questionList)
+                  );
                 },
                 child: const Text(
                   'Start the quizz!',

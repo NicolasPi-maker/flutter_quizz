@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quizz/component/home_card.dart';
+import 'package:quizz/widget/home_card.dart';
 
 void main() {
   runApp(const MyApp());

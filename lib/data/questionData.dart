@@ -1,4 +1,5 @@
-import 'package:quizz/class/question.dart';
+import 'package:quizz/model/question.dart';
+
 class QuestionData {
   List<Question> questionList = [
     Question(
