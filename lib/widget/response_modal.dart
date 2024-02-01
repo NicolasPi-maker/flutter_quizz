@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quizz/widget/score_modal.dart';
 
 class ResponseModal extends StatelessWidget {
-  const ResponseModal
+  ResponseModal
     ({
       super.key,
       required this.incScore,
@@ -20,7 +20,7 @@ class ResponseModal extends StatelessWidget {
   final int questionLength;
   final int currentQuestionIndex;
   final BuildContext context;
-  final int score;
+  late final int score;
 
   Future<void> showCustomDialog({required Widget dialog, required BuildContext context}) async {
     await showDialog(
@@ -33,8 +33,11 @@ class ResponseModal extends StatelessWidget {
   }
 
   SimpleDialog customSimpleDialog(choosedResponse, question) {
+    if (choosedResponse == question.response) {
+      incScore();
+    }
     return SimpleDialog(
-      title: Text(choosedResponse != question.response ? 'Mauvaise réponse...' : 'Bravo ! Voila un pépito'),
+      title: Text(choosedResponse != question.response ? 'Mauvaise réponse...' : 'Bravo ! Voila un pépito', textAlign: TextAlign.center),
       elevation: 12,
       children: [
         Column(
@@ -42,12 +45,16 @@ class ResponseModal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image(
+              fit: BoxFit.cover,
                 image: AssetImage(choosedResponse != question.response
-                    ? '${uploadsBaseUrl}non.gif'
-                    : '${uploadsBaseUrl}oui.gif')),
+                    ? '${uploadsBaseUrl}error.gif'
+                    : '${uploadsBaseUrl}success.gif'),
+              height: 200,
+              width: 400,
+            ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text(question.explanation),
+              child: Text(question.explanation, style: const TextStyle(fontSize: 15)),
             ),
           ],
         ),
@@ -57,35 +64,36 @@ class ResponseModal extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               if (currentQuestionIndex + 1 == questionLength) {
+                int finalScore = score;
+                if (choosedResponse == question.response) {
+                  finalScore++;
+                }
                 Navigator.of(context).pop();
-                switch(score) {
+                switch(finalScore) {
                   case <= 3:
                     showCustomDialog(
-                        dialog: ScoreModal(context: context).customScoreDialog(score, 'Nul Nul Nul', '${uploadsBaseUrl}oui.gif', 'C\'est toi le problème il faut se remettre en question'),
+                        dialog: ScoreModal(context: context).customScoreDialog(finalScore, 'Nul Nul Nul', '${uploadsBaseUrl}bad.gif', 'C\'est toi le problème il faut se remettre en question'),
                         context: context
                     );
                   break;
                   case > 3 && < 7:
                     showCustomDialog(
-                        dialog: ScoreModal(context: context).customScoreDialog(score, 'C\'est correct on va dire', '${uploadsBaseUrl}oui.gif', 'Rejour pour faire mieux'),
+                        dialog: ScoreModal(context: context).customScoreDialog(finalScore, 'C\'est correct on va dire', '${uploadsBaseUrl}medium.gif', 'Essaye encore pour faire mieux'),
                         context: context
                     );
                   break;
                   case == 10:
                     showCustomDialog(
-                      dialog: ScoreModal(context: context).customScoreDialog(score, 'Félicitation c\'est un perfect', '${uploadsBaseUrl}oui.gif', 'Maintenant va trouver un travail'),
+                      dialog: ScoreModal(context: context).customScoreDialog(finalScore, 'Félicitation c\'est un perfect', '${uploadsBaseUrl}wow.webp', 'Maintenant va trouver un travail'),
                       context: context
                     );
                   default:
                     showCustomDialog(
-                        dialog: ScoreModal(context: context).customScoreDialog(score, 'Bien joué c\'est pas mal !', '${uploadsBaseUrl}oui.gif', 'Bravo tu t\'en est bien sortie'),
+                        dialog: ScoreModal(context: context).customScoreDialog(finalScore, 'Bien joué c\'est pas mal !', '${uploadsBaseUrl}good.gif', 'Bravo tu t\'en est bien sortie'),
                         context: context
                     );
                 }
               } else {
-                if (choosedResponse == question.response) {
-                  incScore();
-                }
                 incIndex();
                 Navigator.of(context).pop();
               }

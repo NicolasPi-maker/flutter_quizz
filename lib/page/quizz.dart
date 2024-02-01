@@ -53,12 +53,12 @@ class _QuestionState extends State<Question> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(40.0),
+            padding: const EdgeInsets.all(30.0),
             child: Text(
               'Question n° ${currentQuestionIndex + 1} / ${widget.questions.length}',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 15,
+                fontSize: 20,
               ),
             ),
           ),

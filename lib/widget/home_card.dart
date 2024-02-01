@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quizz/page/quizz.dart';
-import 'package:quizz/data/questionData.dart';
+import 'package:quizz/data/question_data.dart';
 import 'package:quizz/helper/navigator_helper.dart';
+import 'package:quizz/page/quizz.dart';
+import 'package:quizz/widget/rounded_square_button.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({super.key});
@@ -10,36 +11,31 @@ class HomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: const BeveledRectangleBorder(borderRadius: BorderRadius.zero),
-      margin: const EdgeInsets.all(30.0),
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            Image(image: AssetImage('${uploadsBaseUrl}nutella.jpeg')),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlueAccent,
-                  shape: const BeveledRectangleBorder(
-                      borderRadius: BorderRadius.zero),
-                ),
-                onPressed: () {
-                  NavigatorHelper().toSpecificPage(
-                      context: context,
-                      page: Question(questions: QuestionData().questionList)
-                  );
-                },
-                child: const Text(
-                  'Start the quizz!',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image(image: AssetImage('${uploadsBaseUrl}quizz.jpg')),
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: RoundedSquareButton(
+              buttonText: 'Start the quizz !',
+              onPressedCallback: () {
+                NavigatorHelper().toSpecificPage(
+                  context: context,
+                  page: Question(questions: QuestionData().questionList),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

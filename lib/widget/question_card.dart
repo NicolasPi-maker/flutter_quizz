@@ -16,24 +16,26 @@ class QuestionCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(30.0),
-            child: CircleAvatar(
-              radius: 135,
-              backgroundColor: Colors.blueGrey,
-              child: CircleAvatar(
-                radius: 130,
-                backgroundImage: AssetImage(
-                    '$uploadsBaseUrl${question.imagePath}'),
-              ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image(image: AssetImage('$uploadsBaseUrl${question.imagePath}'), height: 300, fit: BoxFit.cover,),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              question.question,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
+            padding: const EdgeInsets.all(30.0),
+            child: Card(
+              color: Colors.white,
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  question.question,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
               ),
             ),
           ),

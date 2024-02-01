@@ -31,12 +31,16 @@ class _RoundedSquareButtonState extends State<RoundedSquareButton> {
           ),
       ),
       onPressed: () { widget.onPressedCallback!(); },
-      child: Text(
-        widget.buttonText,
-        style: TextStyle(
-          color: widget.textColor ?? Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Text(
+          widget.buttonText,
+          style: TextStyle(
+            color: widget.textColor ?? Colors.white,
+            fontSize: 20
+          ),
         ),
-      ),
+      )
     );
   }
 }

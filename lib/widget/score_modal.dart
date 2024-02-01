@@ -11,17 +11,17 @@ class ScoreModal extends StatelessWidget {
   SimpleDialog customScoreDialog(
       int score, String title, String image, String description) {
     return SimpleDialog(
-      title: Text('${'$title, votre score est de $score'} points'),
+      title: Text('${'$title, votre score est de $score'} ${score > 1 ? 'points' : 'point'}'),
       elevation: 12,
       children: [
         Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Image(image: AssetImage(image)),
+            Image(image: AssetImage(image),height: 300, fit: BoxFit.cover,),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text(description),
+              child: Text(description, style: const TextStyle(fontSize: 20)),
             ),
           ],
         ),
@@ -35,7 +35,8 @@ class ScoreModal extends StatelessWidget {
                 onPressed: () {
                   NavigatorHelper().toSpecificPage(
                       context: context,
-                      page: const MyHomePage(title: 'Quizz time!'));
+                      page: const MyHomePage(title: 'Quizz time!')
+                  );
                 },
                 child: const Text('Rejouer')),
             ],
