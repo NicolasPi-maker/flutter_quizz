@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizz/page/score.dart';
 import 'package:quizz/widget/question_card.dart';
+import 'package:quizz/widget/response_modal.dart';
 import 'package:quizz/widget/rounded_square_button.dart';
 import 'package:quizz/helper/navigator_helper.dart';
 
@@ -18,9 +19,15 @@ class _QuestionState extends State<Question> {
   late int score = 0;
   late int currentQuestionIndex = 0;
 
-  void incScore() {
+  incScore() {
     setState(() {
       score = score + 1;
+    });
+  }
+
+  incIndex() {
+    setState(() {
+      currentQuestionIndex++;
     });
   }
 
@@ -37,33 +44,30 @@ class _QuestionState extends State<Question> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image(image: AssetImage(choosedResponse != question.response ? '${uploadsBaseUrl}non.gif' : '${uploadsBaseUrl}oui.gif')),
-            Text(question.explanation),
+            Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(question.explanation),
+            ),
           ],
         ),
         const Divider(),
-        ElevatedButton(
-            onPressed: () {
-              if(currentQuestionIndex + 1 == widget.questions.length) {
-                NavigatorHelper().toSpecificPage(context: context, page: const Score());
-              } else {
-                setState(() {
-                  currentQuestionIndex++;
-                  Navigator.of(context).pop();
-                });
-              }
-            },
-            child: Text(currentQuestionIndex + 1 == widget.questions.length ? 'Voir mon score' :'Question suivante par pitié')
-        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: ElevatedButton(
+              onPressed: () {
+                if(currentQuestionIndex + 1 == widget.questions.length) {
+                  NavigatorHelper().toSpecificPage(context: context, page: const Score());
+                } else {
+                  setState(() {
+                    currentQuestionIndex++;
+                    Navigator.of(context).pop();
+                  });
+                }
+              },
+              child: Text(currentQuestionIndex + 1 == widget.questions.length ? 'Voir mon score' :'Question suivante par pitié')
+          ),
+        )
       ],
-    );
-  }
-
-  SimpleDialogOption simpleDialogOption({required String text}) {
-    return SimpleDialogOption(
-      onPressed: () {
-        // Do something here 
-      },
-      child: Text(text),
     );
   }
 
@@ -112,14 +116,30 @@ class _QuestionState extends State<Question> {
                   buttonText: 'Vrai',
                   backgroundColor: Colors.lightGreen,
                   onPressedCallback: () {
-                    showCustomDialog(context: context, dialog: customSimpleDialog(true, widget.questions[currentQuestionIndex]));
+                    showCustomDialog(
+                        dialog: ResponseModal(
+                            questionLength: widget.questions.length,
+                            incIndex: incIndex,
+                            incScore: incScore,
+                            currentQuestionIndex: currentQuestionIndex,
+                            context: context).customSimpleDialog(true, widget.questions[currentQuestionIndex]),
+                        context: context
+                    );
                   },
                 ),
                 RoundedSquareButton(
                   buttonText: 'Faux',
                   backgroundColor: Colors.redAccent,
                   onPressedCallback: () {
-                    showCustomDialog(context: context, dialog: customSimpleDialog(false, widget.questions[currentQuestionIndex]));
+                    showCustomDialog(
+                        dialog: ResponseModal(
+                            questionLength: widget.questions.length,
+                            incIndex: incIndex,
+                            incScore: incScore,
+                            currentQuestionIndex: currentQuestionIndex,
+                            context: context).customSimpleDialog(false, widget.questions[currentQuestionIndex]),
+                        context: context
+                    );
                   },
                 ),
               ],
