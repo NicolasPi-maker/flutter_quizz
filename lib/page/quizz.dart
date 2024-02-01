@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quizz/page/score.dart';
 import 'package:quizz/widget/question_card.dart';
 import 'package:quizz/widget/response_modal.dart';
 import 'package:quizz/widget/rounded_square_button.dart';
-import 'package:quizz/helper/navigator_helper.dart';
 
 class Question extends StatefulWidget {
   const Question({super.key, required this.questions});
@@ -29,46 +27,6 @@ class _QuestionState extends State<Question> {
     setState(() {
       currentQuestionIndex++;
     });
-  }
-
-  SimpleDialog customSimpleDialog(choosedResponse, question) {
-    if(choosedResponse == question.response) {
-      score++;
-    }
-    return SimpleDialog(
-      title: Text(choosedResponse != question.response ? 'Mauvaise réponse...' : 'Bravo ! Voila un pépito'),
-      elevation: 12,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Image(image: AssetImage(choosedResponse != question.response ? '${uploadsBaseUrl}non.gif' : '${uploadsBaseUrl}oui.gif')),
-            Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(question.explanation),
-            ),
-          ],
-        ),
-        const Divider(),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ElevatedButton(
-              onPressed: () {
-                if(currentQuestionIndex + 1 == widget.questions.length) {
-                  NavigatorHelper().toSpecificPage(context: context, page: const Score());
-                } else {
-                  setState(() {
-                    currentQuestionIndex++;
-                    Navigator.of(context).pop();
-                  });
-                }
-              },
-              child: Text(currentQuestionIndex + 1 == widget.questions.length ? 'Voir mon score' :'Question suivante par pitié')
-          ),
-        )
-      ],
-    );
   }
 
   Future<void> showCustomDialog({required Widget dialog, required BuildContext context}) async {
@@ -122,6 +80,7 @@ class _QuestionState extends State<Question> {
                             incIndex: incIndex,
                             incScore: incScore,
                             currentQuestionIndex: currentQuestionIndex,
+                            score: score,
                             context: context).customSimpleDialog(true, widget.questions[currentQuestionIndex]),
                         context: context
                     );
@@ -137,6 +96,7 @@ class _QuestionState extends State<Question> {
                             incIndex: incIndex,
                             incScore: incScore,
                             currentQuestionIndex: currentQuestionIndex,
+                            score: score,
                             context: context).customSimpleDialog(false, widget.questions[currentQuestionIndex]),
                         context: context
                     );
